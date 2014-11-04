@@ -1,30 +1,56 @@
 from lxml import etree
 import argparse
 
-# parser = argparse.ArgumentParser(description='Format xml files.')
-# parser.add_argument(
-#     'formatit',
-#     metavar='F',
-#     # type=string,
-#     help='Formats and xml file.'
-#     dest=prettyPrintXml('test.xml')
+# parser = argparse.ArgumentParser(
+#     description='Process and format files.',
+#     prog='Python cli',
+#     usage='Python cli for formatting files, might integrate kivy too.'
 # )
+# parser.add_argument(
+#     'filename',
+#     dest='format',
+# )
+# parser.add_argument(
+#     'formatter',
+#     dest='format',
+# )
+# parser.add_argument('integers', metavar='N', type=int, nargs='+',
+#                    help='an integer for the accumulator')
 # parser.add_argument('--sum', dest='accumulate', action='store_const',
 #                    const=sum, default=max,
 #                    help='sum the integers (default: find the max)')
 
-parser = argparse.ArgumentParser(description='Process some integers.')
-parser.add_argument('integers', metavar='N', type=int, nargs='+',
-                   help='an integer for the accumulator')
-parser.add_argument('--sum', dest='accumulate', action='store_const',
-                   const=sum, default=max,
-                   help='sum the integers (default: find the max)')
-
-args = parser.parse_args()
-print args.accumulate(args.integers)
-
 # args = parser.parse_args()
-# print args.accumulate(args.formatit)
+# # print args.format(args.filename)
+# print args.accumulate(args.integers)
+
+def foo(parsed_args):
+    print "woop is {0!r}".format(getattr(parsed_args, 'woop'))
+
+
+def bar(parsed_args):
+    print "moop is {0!r}".format(getattr(parsed_args, 'moop'))
+
+
+def printStuff(parsed_args):
+    print 'Worked'
+
+parser = argparse.ArgumentParser()
+
+parser.add_argument('--foo', dest='action', action='store_const', const=foo)
+parser.add_argument('--bar', dest='action', action='store_const', const=bar)
+parser.add_argument('--cat', dest='action', action='store_const', const=printStuff)
+parser.add_argument('--woop')
+parser.add_argument('--moop')
+
+parsed_args = parser.parse_args()
+if parsed_args.action is None:
+    parser.parse_args(['-h'])
+parsed_args.action(parsed_args)
+
+
+def printStuff():
+    print 'Worked'
 
 
 def prettyPrintXml(xmlFilePathToPrettyPrint):
